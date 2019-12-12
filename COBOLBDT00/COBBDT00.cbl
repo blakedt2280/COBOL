@@ -46,7 +46,7 @@
        01  WORK-AREA.
            05  C-SCTR          PIC 999     VALUE 0.
            05  C-PCTR          PIC 99      VALUE ZERO.
-           05  MORE-RECS       PIC XXX     VALUE 'NO'.
+           05  MORE-RECS       PIC XXX     VALUE 'YES'.
 
        01  CURRENT-DATE-AND-TIME.
            05  I-DATE.
@@ -64,7 +64,7 @@
            05 0-YY             PIC 9(4).
            05 FILLER           PIC X(35)   VALUE SPACES.
            05 FILLER           PIC X(29)
-                               VALUE 'WILSON''S COBOL STUDENT ROSTER'.
+                               VALUE 'BLAKE''S COBOL STUDENT ROSTER'.
            05 FILLER           PIC X(44)   VALUE SPACES.
            05 FILLER           PIC X(6)    VALUE "PAGE:".
            05 O-PCTR           PIC Z9.
@@ -136,13 +136,33 @@
            MOVE I-FNAME TO 0-FNAME.
            MOVE I-GPA TO 0-GPA.
            MOVE I-START-SALARY TO 0-START-SALARY.
-
+           
            WRITE PRTLINE FROM DETAIL-LINE
                AFTER ADVANCING 2 LINES
                    AT EOP 
                        PERFORM 9100-HDGS.
 
+       3000-CLOSING.
+           MOVE C-SCTR TO 0-SCTR.
+           WRITE PRTLINE FROM TOTAL-LINE
+               AFTER ADVANCING 2 LINES.
+
+           CLOSE STUDENT-MASTER PRTOUT.
 
 
+       9000-READ.
+           READ STUDENT-MASTER
+               AT END
+                   MOVE 'NO' TO MORE-RECS.
+
+       9100-HDGS.
+           ADD 1 TO C-PCTR.
+           MOVE C-PCTR TO O-PCTR.
+           WRITE PRTLINE FROM COMPANY-TITLE
+               AFTER ADVANCING PAGE.
+           WRITE PRTLINE FROM COL-HDG1
+               AFTER ADVANCING 2 LINES.
+           WRITE PRTLINE FROM COL-HDG2
+               AFTER ADVANCING 1 LINE.
 
 
